@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[margin=2cm]{geometry}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \newcommand\abs[1]{\left|#1\right|}
 \usepackage{nicefrac}
 \usepackage{amsthm}
@@ -9,34 +10,21 @@
 \begin{document}
     \maketitle
     \begin{enumerate}
-        \item
-            The lower bound for the sum of the distances is when every two pairs is at a distance of $d$. This is shown in the following equation:
-            \[\sum_{u\neq v}^{}dist(u,v) = 2^k\cdot\left( 2^k-1 \right)\cdot d\].
-            Another possible lower bound for this is when we take the sum of the differences for each coordinate. 
-            \[\sum_{u \neq v}^{}dist(u,v) = \sum_{u\neq v}^{}\sum_{i=1}^{n} u_i \neq v_i\]
-            For every $i \in [n]$ we have the distance as $n_0\cdot n_1$ where $n_0=\#\left\{u|u_i =0 \right\}$ and $n_1 = \left\{ u | u_i = 1 \right\}$. Consequently, we arrive at the result of 
-            \begin{align*}
-                \sum_{u\neq v}^{}\sum_{i=1}^{n} u_i \neq v_i &= \sum_{i=1}^{n} \sum_{u\neq v}u_i \neq v_i = \sum_{i=1}^{n} n_0 \cdot n_1  + n_1 \cdot n_0 =\sum_{i=1}^{n}n_0 \left( 2^k -n_0 \right) + n_1\cdot \left( 2^k - n_1 \right) \\&= 2^k (n_0 +n_1) - \left( n_0 ^2 + n_1 ^2 \right) \end{align*}
-            Using the Cauchy-Schwartz inequality, we know that
-            \[\left( n_0^2 + n_1 ^2 \right) \ge \frac{(n_0 + n_1)^2}{2} = 2^{2k-1}\]
-            Applying this to our equation
-            \[
-            \sum_{u\neq v}^{}\sum_{i=1}^{n} u_i \neq v_i \ge \sum_{i=1}^{n} 2^{2k} - 2^{2k-1} = \sum_{i=1}^{n} 2^{2k-1} = n\cdot 2^{2k-1}\]
-            As we know, this sum is bigger than $2^k\cdot\left( 2^k-1 \right)\cdot d$ leading us to 
-            \[n\cdot 2^{2k-1} \ge 2^k\cdot\left( 2^k-1 \right)\cdot d \overset{:2^k}{\Rightarrow}  n\cdot 2^{k-1} \ge d\cdot 2^k -d \Rightarrow d \ge  2^{k-1}\cdot\left( 2d-n \right)\Rightarrow \frac{2d}{2d -n} \ge 2^k \Rightarrow 2\left\lfloor \frac{d}{2d-n}\right\rfloor \ge 2^k\]\qed
-        \item Clearly, $n = 2^l-1$ since the vectors in the dual code are of equal length. In addition, the Hamming code has $k = 2^l - l-1$ which leads to the dual code having $k=l$. The dual code encodes a string $x$ as the inner product of x with all possible vecotrs of length $l$ (since the Hamming code has the columns of all possible vectors). Thus, we can view $\operatorname{Enc}\left( x \right) = \left( \langle x,a\rangle \right)_{0\neq a \in \left\{ 0,1 \right\}^k}$.
-            Every two words differ on exactly $nicefrac 12$ of these values, or in other words in $\nicefrac {2^{l}}2$ of the coordinates leading us to $d= 2^{l-1}$. Applying this to he previous equation we arrive at the result of \[2\cdot \left\lfloor \frac{2^{l-1}}{2^l- \left( 2^l-1 \right)}\right\rfloor = 2\cdot 2^{l-1}= 2^l\] Proving that this bound is indeed tight for this code.
-        \item We will look at balls with radii of $\nicefrac{d-1}2$. These are all disjoint and each contains \[\sum_{i=1}^{\frac{d-1}{2}}{n \choose i} \left( q-1 \right)^i\] words. Since there are a total of $q^k$ words i nthe code and the balls around each one are disjoint we have that the sum is smaller than the amount of words of length $n$, or in other words: \[q^k\cdot  \sum_{i=1}^{\frac{d-1}{2}}{n \choose i} \left( q-1 \right)^i \le q^n\]
-            As needed.
-        \item \begin{enumerate}
-                \item Let us assume $m \ge 2, 1 \le d < \abs{S}$. The proof is by reduction to the case $m = 1$. Write $f = g + h$, where $g \neq 0$ is homogeneous of degree $d$, and h contains only monomials of degree strictly smaller than $d$. Let $0 \neq y \in S^m$ be such that $g(y) = 0$. Note that $S^m$ can be partitioned into $\abs{S}^{m-1}$ parallel lines (finite geometry!), where each line is of the form $\{x + ty |t \in S\}$ for some $x \in S^m$ For any $x \in S^m$, $f(x + ty)$ is a  polynomial in $t$ of degree at most $d$ which is not identically 0. The reason is that the coefficient of $t^d$ is $g(y)$. Thus, the number of zeros on each of the lines is at most $d$, and the total number of zeros of $f$ is at most $d\cdot \abs{S}^{m-1}$. This is out of a total sample space and thus the probability is at most $\frac{d\cdot \abs{S}^{m-1}}{\abs{S}^m} = \frac{d}{\abs{S}}$
-.
-                \item We will prove the right hand side using induction, the left one follows trivially.
-                \paragraph{Base Case:} $d=1$. The function is the sum of at most $m$ inputs, and as a result equals 1 and 0 with equal probability.
-                \paragraph{Induction step:} We will assume that the value is true for $d$ and prove for $d+1$. For every variable $x_i$ we can write the function as a product of polynomials. e.g.
-                \[f(x_1,x_2,\dots,x_m) = x_i\cdot g(x_1,\dots,x_{i-1},x_{i+1},\dots,x_m) +  h(x_1,\dots,x_{i-1},x_{i+1},\dots,x_m)\] In the first case, if $x_i =0$ which happens with a probability of $\frac 12$ then the probability of the function vanishing equals to the probability of $h$ vanishing where $h$ is a function with a degree of at most $d$. Consequently the total probability is at least $2^{-(d+1)}$\\ 
-                If $x_i =1$ then $g(x_1,\dots,x_{i-1},x_{i+1},\dots,x_m) +  h(x_1,\dots,x_{i-1},x_{i+1},\dots,x_m)=0$ iff either both of the values equal 0 or 1.each of these are polynomials of degree $\le d$ and thus the induction applies to them. Applying that we have with probability of $2^{d-1}$. In total we arrive at the right hand side of the equation.
-                \paragraph{The} left hand side can be proven by taking the polynomial and adding 1.
-            \end{enumerate}
-    \end{enumerate} 
+        \item We need to prove is that the basis for $C_k$  is perpendicular to the basis for $C_{q-k+1}$. A basis for \[C_k = Sp\left\{ \begin{pmatrix} a_1 ^0\\\vdots\\a_q ^0\end{pmatrix},\begin{pmatrix}
+                a_1 ^1\\\vdots\\a_q ^1
+            \end{pmatrix},\dots,\begin{pmatrix}
+                a_1 ^{k-1}\\\vdots\\a_q ^{k-1}
+            \end{pmatrix}\right\}\qquad C_{q-k+1} = Sp\left\{ \begin{pmatrix} a_1 ^0\\\vdots\\a_q ^0\end{pmatrix},\begin{pmatrix}
+                a_1 ^1\\\vdots\\a_q ^1
+            \end{pmatrix},\dots,\begin{pmatrix}
+                a_1 ^{q-k+1}\\\vdots\\a_q ^{q-k+1}
+        \end{pmatrix}\right\}\] Let $ a \in C_k$ and  $b\cdot C_{q-k+1}$. Thus $a\bullet b = a_1 ^r +a_2 ^r + \dots +a_q ^r$. Where $r < q-1$
+        \begin{itemize}
+            \item If $r=0$ then $a\bullet b =1\cdot q= p^l =0$ since the characteristic of a field of order $q=p^l$ is $p$. \\
+            \item  If $r>0$ then $q >2$. We will use the second hint, that there exists a $\alpha \in \mathbb F _q$ such that $1,\alpha,\alpha^2,\dots,\alpha^{q-2}\neq 0$. Let $a\bullet b = \beta, \beta \in \mathbb F_q$ then multiplying both sides by $\alpha^r$ we have $\left(a_1\cdot \alpha\right) ^r +\left(a_2\cdot \alpha\right) ^r + \dots +\left(a_q\cdot\alpha\right) ^r = \alpha^r \cdot \beta$. Also, multiplying by $\alpha$ gives us an invertible function meaning that the set $\left\{
+                a_1,a_2,\dots,a_n \right\}$ is equivalent to the set $\left\{ a_1\cdot \alpha,a_2\cdot \alpha,\dots,a_q\cdot \alpha \right\}$. Giving us the result that \[a_1 +^r a_2 ^r+\dots +a_q ^r= \frac{(\alpha a_1)^r + (\alpha a_2)^r +\dots+ (\alpha a_q)^r }{\alpha ^r}\Rightarrow  \beta = \beta \cdot \alpha^r\Rightarrow \beta = 0\] Since $\alpha ^r \neq 0$.
+        \end{itemize}
+    Meaning that in all cases, the dot product of a vector in $C_k$ and a vector in $C_{q-k+1}$.
+\item 
+    \end{enumerate}<++>
 \end{document}
